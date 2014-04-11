@@ -15,7 +15,7 @@ module Lono
     def build
       instance_eval(&@block)
       template = IO.read(@source)
-      ERB.new(template).result(binding)
+      ERB.new(template, nil, '-').result(binding)
     end
 
     def source(path)
@@ -32,14 +32,14 @@ module Lono
       path = "#{@options[:project_root]}/templates/partial/#{path}"
       template = IO.read(path)
       variables(vars)
-      ERB.new(template).result(binding)
+      ERB.new(template, nil, '-').result(binding)
     end
 
     def user_data(path, vars={})
       path = "#{@options[:project_root]}/templates/user_data/#{path}"
       template = IO.read(path)
       variables(vars)
-      result = ERB.new(template).result(binding)
+      result = ERB.new(template, nil, '-').result(binding)
       output = []
       result.split("\n").each do |line|
         output += transform(line)
